@@ -1,5 +1,5 @@
 import { Paper, Box, Stack, IconButton, Typography } from "@mui/material";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import FormCreateSurvey from "./FormCreateSurvey";
 import { useFormik } from "formik";
 import * as moment from "moment";

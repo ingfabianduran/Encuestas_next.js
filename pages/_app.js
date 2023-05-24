@@ -1,13 +1,13 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import Head from 'next/head';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { CacheProvider } from '@emotion/react';
-import theme from '../src/theme';
-import createEmotionCache from '../src/createEmotionCache';
+import * as React from "react";
+import PropTypes from "prop-types";
+import Head from "next/head";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { CacheProvider } from "@emotion/react";
+import theme from "../src/theme";
+import createEmotionCache from "../src/createEmotionCache";
 import "../styles/globals.css";
-import { Container } from "@mui/material";
+import Layout from "../src/components/Layout/Layout";
 
 const clientSideEmotionCache = createEmotionCache();
 export default function MyApp(props) {
@@ -19,11 +19,9 @@ export default function MyApp(props) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Container maxWidth="xl" sx={{
-          marginTop: "15px"
-        }}>
+        <Layout>
           <Component {...pageProps} />
-        </Container>
+        </Layout>
       </ThemeProvider>
     </CacheProvider>
   );

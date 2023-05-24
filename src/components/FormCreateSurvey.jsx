@@ -1,7 +1,6 @@
 import { Stack, Grid, TextField, FormControl, InputLabel, Select, MenuItem, Divider, Button, InputAdornment, } from "@mui/material";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import DeleteIcon from '@mui/icons-material/Delete';
-import UploadIcon from '@mui/icons-material/Upload';
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { FormikProvider, FieldArray } from "formik";
 import { DatePicker } from "@mui/x-date-pickers";
 import { MuiFileInput } from "mui-file-input";
