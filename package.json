@@ -16,13 +16,14 @@
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "@mui/x-date-pickers": "^6.5.0",
+    "formik": "^2.2.9",
+    "moment": "^2.29.4",
+    "mui-file-input": "^2.0.0",
     "next": "latest",
     "prop-types": "latest",
     "react": "latest",
-    "react-dom": "latest",
-    "@mui/x-date-pickers": "^6.5.0",
-    "formik": "^2.2.9",
-    "moment": "^2.29.4"
+    "react-dom": "latest"
   },
   "devDependencies": {
     "eslint": "latest",

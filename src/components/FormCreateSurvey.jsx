@@ -4,6 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import UploadIcon from '@mui/icons-material/Upload';
 import { FormikProvider, FieldArray } from "formik";
 import { DatePicker } from "@mui/x-date-pickers";
+import { MuiFileInput } from "mui-file-input";
 
 export default function FormCreateSurvey({ formik }) {
   return (
@@ -59,21 +60,14 @@ export default function FormCreateSurvey({ formik }) {
           </FormControl>
         </Grid>
         <Grid item md={12}>
-          <TextField
+          <MuiFileInput
             fullWidth
             id="loadIdbase"
             name="loadIdbase"
             label="Cargar base de cédulas"
             value={formik.values.loadIdbase}
             onChange={formik.handleChange}
-            variant="filled"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <UploadIcon />
-                </InputAdornment>
-              ),
-            }} />
+            variant="filled" />
         </Grid>
         <FormikProvider value={formik}>
           <FieldArray
