@@ -1,7 +1,6 @@
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import Link from "next/link";
 
-export default function ListNavigationDrawer({ stylesList = null, items, open }) {
+export default function ListNavigationDrawer({ stylesList = null, items, open, actionButtonList }) {
   return (
     <List style={stylesList}>
       {items.map((item, index) => (
@@ -14,7 +13,8 @@ export default function ListNavigationDrawer({ stylesList = null, items, open })
               minHeight: 48,
               justifyContent: open ? "initial" : "center",
               px: 2.5
-            }}>
+            }}
+            onClick={() => actionButtonList(item.url, item.action)}>
             <ListItemIcon
               sx={{
                 minWidth: 0,

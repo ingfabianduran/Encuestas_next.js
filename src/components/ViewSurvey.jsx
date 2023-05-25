@@ -9,7 +9,10 @@ export default function ViewSurvey() {
     initialValues: {
       nameSurvey: '',
       launchSurvey: '',
-      publicationDate: moment(),
+      daysOfPublication: '',
+      releaseDate: moment(),
+      publicationStartDate: moment(),
+      publicationEndDate: moment(),
       publishSurveyTo: '',
       loadIdbase: '',
       sections: [{

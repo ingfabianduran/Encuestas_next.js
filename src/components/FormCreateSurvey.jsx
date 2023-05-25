@@ -1,9 +1,10 @@
-import { Stack, Grid, TextField, FormControl, InputLabel, Select, MenuItem, Divider, Button, InputAdornment, } from "@mui/material";
+import { Stack, Grid, TextField, FormControl, InputLabel, Select, MenuItem, Divider, Button } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { FormikProvider, FieldArray } from "formik";
 import { DatePicker } from "@mui/x-date-pickers";
 import { MuiFileInput } from "mui-file-input";
+import { WEEKDAYS, LAUNCH_OF_THE_SURVEY } from "../constantes/ValuesFormSurvey";
 
 export default function FormCreateSurvey({ formik }) {
   return (
@@ -27,25 +28,83 @@ export default function FormCreateSurvey({ formik }) {
               name="launchSurvey"
               value={formik.values.launchSurvey}
               onChange={formik.handleChange}>
-              <MenuItem value={1}>Día especifico</MenuItem>
-              <MenuItem value={2}>Rango de fechas</MenuItem>
-              <MenuItem value={3}>Semanalmente</MenuItem>
+              {
+                LAUNCH_OF_THE_SURVEY.map((item, index) => (
+                  <MenuItem key={index} value={item.value}>{item.name}</MenuItem>
+                ))
+              }
             </Select>
           </FormControl>
         </Grid>
-        <Grid item md={6}>
-          <DatePicker
-            label="Fecha de publicación"
-            value={formik.values.publicationDate}
-            onChange={(value) => formik.setFieldValue("publicationDate", value, true)}
-            slotProps={{
-              textField: {
-                variant: 'filled',
-                fullWidth: true
-              }
-            }} />
-        </Grid>
-        <Grid item md={6}>
+        {
+          formik.values.launchSurvey === 1 || formik.values.launchSurvey === 3 ? (
+            <Grid item md={6}>
+              <FormControl fullWidth variant="filled">
+                <InputLabel id="daysOfPublication">Dias de publicación</InputLabel>
+                <Select
+                  id="daysOfPublication"
+                  name="daysOfPublication"
+                  value={formik.values.daysOfPublication}
+                  onChange={formik.daysOfPublication}>
+                  {
+                    WEEKDAYS.map((item, index) => (
+                      <MenuItem key={index} value={item.value}>
+                        {item.name}
+                      </MenuItem>
+                    ))
+                  }
+                </Select>
+              </FormControl>
+            </Grid>
+          ) : null
+        }
+        {
+          formik.values.launchSurvey === 2 && (
+            <>
+              <Grid item md={4}>
+                <DatePicker
+                  label="Fecha inicio de la publicación"
+                  value={formik.values.publicationStartDate}
+                  onChange={(value) => formik.setFieldValue("publicationStartDate", value, true)}
+                  slotProps={{
+                    textField: {
+                      variant: 'filled',
+                      fullWidth: true
+                    }
+                  }} />
+              </Grid>
+              <Grid item md={4}>
+                <DatePicker
+                  label="Fecha fin de la publicación"
+                  value={formik.values.publicationEndDate}
+                  onChange={(value) => formik.setFieldValue("publicationEndDate", value, true)}
+                  slotProps={{
+                    textField: {
+                      variant: 'filled',
+                      fullWidth: true
+                    }
+                  }} />
+              </Grid>
+            </>
+          )
+        }
+        {
+          formik.values.launchSurvey === 3 && (
+            <Grid item md={6}>
+              <DatePicker
+                label="Fecha de lanzamiento"
+                value={formik.values.releaseDate}
+                onChange={(value) => formik.setFieldValue("releaseDate", value, true)}
+                slotProps={{
+                  textField: {
+                    variant: 'filled',
+                    fullWidth: true
+                  }
+                }} />
+            </Grid>
+          )
+        }
+        <Grid item md={formik.values.launchSurvey === '' || formik.values.launchSurvey === 3 ? 12 : formik.values.launchSurvey === 2 ? 4 : 6}>
           <FormControl fullWidth variant="filled">
             <InputLabel id="publishSurveyTo">Publicar encuesta a</InputLabel>
             <Select
@@ -58,16 +117,20 @@ export default function FormCreateSurvey({ formik }) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item md={12}>
-          <MuiFileInput
-            fullWidth
-            id="loadIdbase"
-            name="loadIdbase"
-            label="Cargar base de cédulas"
-            value={formik.values.loadIdbase}
-            onChange={formik.handleChange}
-            variant="filled" />
-        </Grid>
+        {
+          formik.values.publishSurveyTo === 2 && (
+            <Grid item md={12}>
+              <MuiFileInput
+                fullWidth
+                id="loadIdbase"
+                name="loadIdbase"
+                label="Cargar base de cédulas"
+                value={formik.values.loadIdbase}
+                onChange={formik.handleChange}
+                variant="filled" />
+            </Grid>
+          )
+        }
         <FormikProvider value={formik}>
           <FieldArray
             name="sections"
