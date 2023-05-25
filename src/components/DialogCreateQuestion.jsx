@@ -102,7 +102,7 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button type="button" variant="outlined" size="large">Cancelar</Button>
+          <Button type="button" variant="outlined" size="large" onClick={closeDialogQuestion}>Cancelar</Button>
           <Button type="submit" variant="contained" size="large">Guardar configuración del campo</Button>
         </DialogActions>
       </form>
