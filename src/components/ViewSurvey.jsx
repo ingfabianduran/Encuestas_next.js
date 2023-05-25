@@ -1,30 +1,8 @@
 import { Paper, Box, Stack, IconButton, Typography } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import FormCreateSurvey from "./FormCreateSurvey";
-import { useFormik } from "formik";
-import * as moment from "moment";
 
-export default function ViewSurvey() {
-  const formik = useFormik({
-    initialValues: {
-      nameSurvey: '',
-      launchSurvey: '',
-      daysOfPublication: '',
-      releaseDate: moment(),
-      publicationStartDate: moment(),
-      publicationEndDate: moment(),
-      publishSurveyTo: '',
-      loadIdbase: '',
-      sections: [{
-        title: '',
-        description: ''
-      }]
-    },
-    onSubmit: (values) => {
-      console.log('Submit create encuesta', values);
-    }
-  });
-
+export default function ViewSurvey({ formik }) {
   return (
     <Paper elevation={5} sx={{
       padding: "50px"

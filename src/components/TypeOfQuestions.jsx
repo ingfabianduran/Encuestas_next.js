@@ -1,7 +1,7 @@
 import { Paper, Box, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { TYPE_OF_QUESTIONS } from "../constantes/TypeOfQuestions";
 
-export default function TypeOfQuestions() {
+export default function TypeOfQuestions({ openDialogQuestion }) {
   return (
     <Paper elevation={5} sx={{
       paddingTop: "50px",
@@ -23,7 +23,7 @@ export default function TypeOfQuestions() {
           <List>
             {TYPE_OF_QUESTIONS.map((item, index) => (
               <ListItem key={index}>
-                <ListItemButton>
+                <ListItemButton onClick={() => openDialogQuestion(item.name)}>
                   <ListItemIcon sx={{
                     display: "flex",
                     justifyContent: "center",

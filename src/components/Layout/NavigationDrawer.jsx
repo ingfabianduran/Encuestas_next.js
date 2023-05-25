@@ -14,8 +14,11 @@ export default function NavigationDrawer() {
     icon: <KeyboardArrowRightIcon />,
     action: "expand",
   }]);
+
   const router = useRouter();
+
   const stylesBottomList = { position: "absolute", bottom: 0, width: "100%" };
+
   const actionButtonList = (url, action = null) => {
     if (!action) router.push(url);
     else {
