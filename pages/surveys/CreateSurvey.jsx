@@ -8,10 +8,17 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { useFormik } from "formik";
 import * as moment from "moment";
 import { showAlert } from "../../src/services/SweetAlert";
+import AlertWithSnackbar from "../../src/components/Shared/AlertWithSnackbar";
 
 export default function CreateSurvey() {
   const [openDialogCreateQuestion, setOpenDialogCreateQuestion] = useState(false);
   const [typeQuestion, setTypeQuestion] = useState('');
+  const [alert, setAlert] = useState({
+    show: false,
+    type: "success",
+    title: "¡Excelente!",
+    message: "Se han guardado los cambios del campo con éxito."
+  });
   const formik = useFormik({
     initialValues: {
       nameSurvey: '',
@@ -33,18 +40,40 @@ export default function CreateSurvey() {
     }
   });
 
+  /**
+    * @author Fabian Duran
+    * @description Permite mostrar la modal para agregar una pregunta.  
+    * @param keyQuestion Tipo de pregunta seleccionada en la lista. 
+  */
   const openDialogQuestion = (keyQuestion) => {
     if (formik.values.sections[0].title !== '' && formik.values.sections[0].description) {
       setTypeQuestion(keyQuestion);
       setOpenDialogCreateQuestion(true);
     } else showAlert("Error", "Por favor registre por lo menos una sección", "error");
   };
-
+  /**
+    * @author Fabian Duran
+    * @description Permite ocultar la modal para agregar una pregunta.  
+  */
   const closeDialogQuestion = () => setOpenDialogCreateQuestion(false);
-
+  /**
+    * @author Fabian Duran
+    * @description Permite agregar una pregunta a la encuesta y sección seleccionada. 
+    * @param formValuesQuestion Información referente a la pregunta creada. 
+  */
   const addQuestionToSurvey = (formValuesQuestion) => {
     console.log('Form values question', formValuesQuestion);
     closeDialogQuestion();
+    const setShowAlert = { ...alert, show: true };
+    setAlert(setShowAlert);
+  };
+  /**
+    * @author Fabian Duran
+    * @description Permite ocultar la alerta de la vista.  
+  */
+  const hideAlert = () => {
+    const setShowAlert = { ...alert, show: false };
+    setAlert(setShowAlert);
   };
 
   return (
@@ -63,6 +92,9 @@ export default function CreateSurvey() {
         typeQuestion={typeQuestion}
         listSections={formik.values.sections}
         addQuestionToSurvey={addQuestionToSurvey} />
+      <AlertWithSnackbar
+        alert={alert}
+        hideAlert={hideAlert} />
     </Grid>
   );
 }

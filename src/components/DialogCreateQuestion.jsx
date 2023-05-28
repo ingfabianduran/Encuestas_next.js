@@ -13,9 +13,13 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Button
+  Button,
+  IconButton
 } from "@mui/material";
-import { useFormik } from "formik";
+import { useFormik, FormikProvider, FieldArray } from "formik";
+import { Fragment } from "react";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDialogQuestion, typeQuestion, listSections, addQuestionToSurvey }) {
   const formik = useFormik({
@@ -83,6 +87,44 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
                 </RadioGroup>
               </FormControl>
             </Grid>
+            <FormikProvider value={formik}>
+              <FieldArray
+                name="options"
+                render={(arrayHelpers) => (
+                  <>
+                    {formik.values.options.map((_, index) => (
+                      <Fragment key={index}>
+                        <Grid item md={11}>
+                          <TextField
+                            fullWidth
+                            id={`options[${index}].text`}
+                            name={`options[${index}].text`}
+                            label={`Opción ${index + 1}`}
+                            value={formik.values.options[index].text}
+                            onChange={formik.handleChange}
+                            variant="filled" />
+                        </Grid>
+                        <Grid item md={1}>
+                          <IconButton onClick={() =>
+                            index === 0 ?
+                              arrayHelpers.push({ id: index, text: '' })
+                              :
+                              arrayHelpers.remove(index)}>
+                            {
+                              index === 0 ? (
+                                <AddCircleOutlineIcon sx={{ color: "#8192A2" }} />
+                              ) : (
+                                <DeleteOutlineIcon sx={{ color: "#E2001A" }} />
+                              )
+                            }
+                          </IconButton>
+                        </Grid>
+                      </Fragment>
+                    ))}
+                  </>
+                )}>
+              </FieldArray>
+            </FormikProvider>
             <Grid item md={12}>
               <FormControl fullWidth variant="filled">
                 <InputLabel id="indexSection">Sección de la encuesta</InputLabel>

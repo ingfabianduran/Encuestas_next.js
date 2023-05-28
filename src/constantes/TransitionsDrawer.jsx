@@ -2,7 +2,11 @@ import MuiDrawer from "@mui/material/Drawer";
 import { styled } from "@mui/material/styles";
 
 const WIDTH = 240;
-
+/**
+  * @author Fabian Duran
+  * @description Configuración en las transiciones de apertura del drawer. 
+  * @param theme Información referente al thema de MUI. 
+*/
 const OPENED_MIXIN = (theme) => ({
   width: WIDTH,
   transition: theme.transitions.create("width", {
@@ -11,7 +15,11 @@ const OPENED_MIXIN = (theme) => ({
   }),
   overflowX: "hidden",
 });
-
+/**
+  * @author Fabian Duran
+  * @description Configuración en las transiciones deL cierre del drawer. 
+  * @param theme Información referente al thema de MUI. 
+*/
 const CLOSED_MIXIN = (theme) => ({
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,

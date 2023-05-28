@@ -19,6 +19,12 @@ export default function NavigationDrawer() {
 
   const stylesBottomList = { position: "absolute", bottom: 0, width: "100%" };
 
+  /**
+    * @author Fabian Duran
+    * @description Permite gestionar los eventos de los botones sobre el navigation drawer. 
+    * @param url Url que contiene el menu. 
+    * @param action Si no es de tipo url si no de tipo click. 
+  */
   const actionButtonList = (url, action = null) => {
     if (!action) router.push(url);
     else {
