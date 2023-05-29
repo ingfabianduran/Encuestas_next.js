@@ -23,7 +23,7 @@ export default function TypeOfQuestions({ openDialogQuestion }) {
           <List>
             {TYPE_OF_QUESTIONS.map((item, index) => (
               <ListItem key={index}>
-                <ListItemButton onClick={() => openDialogQuestion(item.name)}>
+                <ListItemButton onClick={() => openDialogQuestion(item.key)}>
                   <ListItemIcon sx={{
                     display: "flex",
                     justifyContent: "center",

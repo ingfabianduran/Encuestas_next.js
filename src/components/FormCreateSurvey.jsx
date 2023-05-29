@@ -181,7 +181,7 @@ export default function FormCreateSurvey({ formik }) {
                       variant="outlined"
                       size="large"
                       endIcon={<AddCircleOutlineIcon />}
-                      onClick={() => arrayHelpers.push({ title: '', description: '' })}>
+                      onClick={() => arrayHelpers.push({ title: '', description: '', fields: [] })}>
                       Nueva sección
                     </Button>
                   </Divider>
