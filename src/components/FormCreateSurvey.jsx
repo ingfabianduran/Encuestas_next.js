@@ -5,6 +5,7 @@ import { FormikProvider, FieldArray } from "formik";
 import { DatePicker } from "@mui/x-date-pickers";
 import { MuiFileInput } from "mui-file-input";
 import { WEEKDAYS, LAUNCH_OF_THE_SURVEY } from "../constantes/ValuesFormSurvey";
+import ViewQuestions from "./ViewQuestions";
 
 export default function FormCreateSurvey({ formik }) {
   return (
