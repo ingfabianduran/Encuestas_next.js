@@ -36,7 +36,8 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
     },
     onSubmit: (values) => {
       console.log('Submit create question', values);
-      addQuestionToSurvey(values);
+      const setTypeQuestion = { ...values, typeQuestion };
+      addQuestionToSurvey(setTypeQuestion);
     }
   });
 
@@ -61,7 +62,7 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
                 variant="filled" />
             </Grid>
             {
-              typeQuestion === "informaivo" && (
+              typeQuestion === "informativo" && (
                 <Grid item md={12}>
                   <TextField
                     fullWidth

@@ -173,6 +173,11 @@ export default function FormCreateSurvey({ formik }) {
                       variant="filled"
                       margin="normal"
                       multiline />
+                    {
+                      formik.values.sections[index].fields.length > 0 && (
+                        <ViewQuestions questions={formik.values.sections[index].fields} />
+                      )
+                    }
                   </Grid>
                 ))}
                 <Grid item md={12}>

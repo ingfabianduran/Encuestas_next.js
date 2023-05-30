@@ -62,14 +62,12 @@ export default function CreateSurvey() {
     * @param formValuesQuestion Información referente a la pregunta creada. 
   */
   const addQuestionToSurvey = (formValuesQuestion) => {
-    console.log('Preguna', formValuesQuestion);
     const setShowAlert = { ...alert, show: true };
     setAlert(setShowAlert);
     const setFieldsBySection = formik.values.sections;
     setFieldsBySection[formValuesQuestion.indexSection].fields.push(formValuesQuestion);
     formik.setFieldValue("sections", setFieldsBySection);
     closeDialogQuestion();
-    console.log('Form', formik);
   };
   /**
     * @author Fabian Duran
