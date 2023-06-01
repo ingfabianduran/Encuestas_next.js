@@ -21,10 +21,11 @@ export default function FormCreateSurvey({ formik }) {
   const [openDialogUpdateQuestion, setOpenDialogUpdateQuestion] = useState(false);
   const [typeQuestion, setTypeQuestion] = useState('');
   const [questionData, setQuestionData] = useState(null);
+  const [indexQuestionSelect, setIndexQuestionSelect] = useState(null);
 
   /**
     * @author Fabian Duran
-    * @description Permite actualizar la informacion de una pregunta de la encuesta. 
+    * @description Permite vizualizar la informacion de una pregunta de la encuesta. 
     * @param indexSection Indice de la seccion donde esta ubicada la pregunta. 
     * @param indexQuestion Indice en el cual se ubica la pregunta dentro de la seccion. 
   */
@@ -34,31 +35,55 @@ export default function FormCreateSurvey({ formik }) {
       setTypeQuestion(question.typeQuestion);
       setOpenDialogUpdateQuestion(true);
       setQuestionData(question);
+      setIndexQuestionSelect(indexQuestion);
     }
   };
   /**
     * @author Fabian Duran
-    * @description Permite eliminar una pregunta de la encuesta. 
+    * @description Permite actualizar la informacion de una pregunta de la encuesta. 
+    * @param indexSection Informacion de la pregunta actualizada en la modal. 
+  */
+  const updateQuestion = (question, oldQuestion) => {
+    console.log({ question, oldQuestion });
+    if (question.indexSection !== oldQuestion.indexSection) {
+      filterByDeleteQuestion(oldQuestion.indexSection, indexQuestionSelect);
+      closeDialoQuestion();
+    } else {
+      console.log('No lo voy a cambiar de sección');
+    }
+  };
+  /**
+    * @author Fabian Duran
+    * @description Permite eliminar una pregunta de la encuesta.  
     * @param indexSection Indice de la seccion donde esta ubicada la pregunta. 
     * @param indexQuestion Indice en el cual se ubica la pregunta dentro de la seccion. 
   */
   const deleteQuestion = (indexSection, indexQuestion) => {
     showAlertConfirm({ text: "¿Está seguro de eliminar la pregunta?" }).then(confirm => {
       if (confirm.isConfirmed) {
-        const setQuestionsBySection = formik.values.sections;
-        setQuestionsBySection.forEach((section, index) => {
-          if (index === indexSection) {
-            const filterQuestions = section.fields.filter((_, index) => {
-              return index !== indexQuestion;
-            });
-            section.fields = filterQuestions;
-          }
-        });
-        formik.setFieldValue("sections", setQuestionsBySection);
+        filterByDeleteQuestion(indexSection, indexQuestion);
         const setShowAlert = { ...alert, show: true, message: "Se ha eliminado el campo con exito" };
         setAlert(setShowAlert);
       }
     });
+  };
+  /**
+    * @author Fabian Duran
+    * @description Permite filtrar y eliminar una pregunta dentro de una sección.
+    * @param indexSection Indice de la seccion donde esta ubicada la pregunta. 
+    * @param indexQuestion Indice en el cual se ubica la pregunta dentro de la seccion. 
+  */
+  const filterByDeleteQuestion = (indexSection, indexQuestion) => {
+    const setQuestionsBySection = formik.values.sections;
+    setQuestionsBySection.forEach((section, index) => {
+      if (index === indexSection) {
+        const filterQuestions = section.fields.filter((_, index) => {
+          return index !== indexQuestion;
+        });
+        section.fields = filterQuestions;
+      }
+    });
+    formik.setFieldValue("sections", setQuestionsBySection);
   };
   /**
     * @author Fabian Duran
@@ -83,7 +108,8 @@ export default function FormCreateSurvey({ formik }) {
           closeDialogQuestion={closeDialoQuestion}
           typeQuestion={typeQuestion}
           listSections={formik.values.sections}
-          data={questionData} />
+          data={questionData}
+          addQuestionToSurvey={updateQuestion} />
         <Grid item md={6}>
           <TextField
             fullWidth

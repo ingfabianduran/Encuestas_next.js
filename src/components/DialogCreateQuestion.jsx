@@ -36,7 +36,7 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
     },
     onSubmit: (values) => {
       const setTypeQuestion = { ...values, typeQuestion };
-      addQuestionToSurvey(setTypeQuestion);
+      addQuestionToSurvey(setTypeQuestion, data);
     }
   });
 
