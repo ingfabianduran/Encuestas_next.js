@@ -8,11 +8,22 @@ import Swal from "sweetalert2";
   * @param icon Imagen principal.
   * @param showConfirmButton Muestra u oculta el boton de OK. 
 */
-export const showAlert = (title = "Correcto", text = "Registro creado con exito", icon = "success", showConfirmButton = false) => {
+export const showAlert = ({ title = "Correcto", text = "Registro creado con exito", icon = "success", showConfirmButton = false }) => {
   return Swal.fire({
     title,
     text,
     icon,
     showConfirmButton
+  });
+};
+
+export const showAlertConfirm = ({ title = "¿Esta seguro?", text = "¿De continuar con la gestión?", icon = "warning", confirmButtonText = "Si", cancelButtonText = "No" }) => {
+  return Swal.fire({
+    title,
+    text,
+    icon,
+    showCancelButton: true,
+    confirmButtonText,
+    cancelButtonText
   });
 };

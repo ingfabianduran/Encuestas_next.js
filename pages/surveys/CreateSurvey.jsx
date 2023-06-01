@@ -49,7 +49,7 @@ export default function CreateSurvey() {
     if (formik.values.sections[0].title !== '' && formik.values.sections[0].description) {
       setTypeQuestion(keyQuestion);
       setOpenDialogCreateQuestion(true);
-    } else showAlert("Error", "Por favor registre por lo menos una sección", "error");
+    } else showAlert({ title: "Error", text: "Por favor registre por lo menos una sección", icon: "error" });
   };
   /**
     * @author Fabian Duran

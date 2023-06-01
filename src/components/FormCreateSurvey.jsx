@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Stack, Grid, TextField, FormControl, InputLabel, Select, MenuItem, Divider, Button } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -6,11 +7,57 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { MuiFileInput } from "mui-file-input";
 import { WEEKDAYS, LAUNCH_OF_THE_SURVEY } from "../constantes/ValuesFormSurvey";
 import ViewQuestions from "./ViewQuestions";
+import AlertWithSnackbar from "./Shared/AlertWithSnackbar";
+import { showAlertConfirm } from "../services/SweetAlert";
 
 export default function FormCreateSurvey({ formik }) {
+  const [alert, setAlert] = useState({
+    show: false,
+    type: "success",
+    title: "¡Excelente!",
+    message: ""
+  });
+
+  const updateQuestion = (indexSection, indexQuestion) => {
+    console.log({ indexSection, indexQuestion });
+  };
+  /**
+    * @author Fabian Duran
+    * @description Permite eliminar 
+    * @param indexSection Indice de la seccion donde esta ubicada la pregunta. 
+    * @param indexQuestion Indice en el cual se ubica la pregunta dentro de la seccion. 
+  */
+  const deleteQuestion = (indexSection, indexQuestion) => {
+    showAlertConfirm({ text: "¿Está seguro de eliminar la pregunta?" }).then(confirm => {
+      if (confirm.isConfirmed) {
+        const setQuestionsBySection = formik.values.sections;
+        setQuestionsBySection.forEach((section, index) => {
+          if (index === indexSection) {
+            const filterQuestions = section.fields.filter((_, index) => {
+              return index !== indexQuestion;
+            });
+            section.fields = filterQuestions;
+          }
+        });
+        formik.setFieldValue("sections", setQuestionsBySection);
+        const setShowAlert = { ...alert, show: true, message: "Se ha eliminado el campo con exito" };
+        setAlert(setShowAlert);
+      }
+    });
+  };
+  /**
+    * @author Fabian Duran
+    * @description Permite ocultar el snackbar de la vista.  
+  */
+  const hideAlert = () => {
+    const setShowAlert = { ...alert, show: false };
+    setAlert(setShowAlert);
+  };
+
   return (
     <form autoComplete="off" onSubmit={formik.handleSubmit}>
       <Grid container spacing={2} mt={4}>
+        <AlertWithSnackbar alert={alert} hideAlert={hideAlert} />
         <Grid item md={6}>
           <TextField
             fullWidth
@@ -175,7 +222,10 @@ export default function FormCreateSurvey({ formik }) {
                       multiline />
                     {
                       formik.values.sections[index].fields.length > 0 && (
-                        <ViewQuestions questions={formik.values.sections[index].fields} />
+                        <ViewQuestions
+                          questions={formik.values.sections[index].fields}
+                          updateQuestion={updateQuestion}
+                          deleteQuestion={deleteQuestion} />
                       )
                     }
                   </Grid>

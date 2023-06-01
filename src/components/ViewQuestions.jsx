@@ -3,7 +3,7 @@ import { Grid, TextField, IconButton } from "@mui/material";
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function ViewQuestions({ questions = [] }) {
+export default function ViewQuestions({ questions = [], updateQuestion, deleteQuestion }) {
   return (
     <Grid container sx={{
       marginTop: 1,
@@ -21,10 +21,16 @@ export default function ViewQuestions({ questions = [] }) {
               display="flex"
               justifyContent="end"
               md={12}>
-              <IconButton aria-label="Update field" sx={{ color: "#BD77CE" }}>
+              <IconButton
+                aria-label="Update field"
+                sx={{ color: "#BD77CE" }}
+                onClick={() => updateQuestion(question.indexSection, index)}>
                 <SettingsSuggestIcon />
               </IconButton>
-              <IconButton aria-label="Delete field" sx={{ color: "#D14A4A" }}>
+              <IconButton
+                aria-label="Delete field"
+                sx={{ color: "#D14A4A" }}
+                onClick={() => deleteQuestion(question.indexSection, index)}>
                 <DeleteIcon />
               </IconButton>
             </Grid>
