@@ -8,6 +8,7 @@ import { MuiFileInput } from "mui-file-input";
 import { WEEKDAYS, LAUNCH_OF_THE_SURVEY } from "../constantes/ValuesFormSurvey";
 import ViewQuestions from "./ViewQuestions";
 import AlertWithSnackbar from "./Shared/AlertWithSnackbar";
+import DialogCreateQuestion from "./DialogCreateQuestion";
 import { showAlertConfirm } from "../services/SweetAlert";
 
 export default function FormCreateSurvey({ formik }) {
@@ -17,13 +18,27 @@ export default function FormCreateSurvey({ formik }) {
     title: "¡Excelente!",
     message: ""
   });
+  const [openDialogUpdateQuestion, setOpenDialogUpdateQuestion] = useState(false);
+  const [typeQuestion, setTypeQuestion] = useState('');
+  const [questionData, setQuestionData] = useState(null);
 
-  const updateQuestion = (indexSection, indexQuestion) => {
-    console.log({ indexSection, indexQuestion });
+  /**
+    * @author Fabian Duran
+    * @description Permite actualizar la informacion de una pregunta de la encuesta. 
+    * @param indexSection Indice de la seccion donde esta ubicada la pregunta. 
+    * @param indexQuestion Indice en el cual se ubica la pregunta dentro de la seccion. 
+  */
+  const showQuestion = (indexSection, indexQuestion) => {
+    const question = formik.values.sections[indexSection].fields[indexQuestion];
+    if (question) {
+      setTypeQuestion(question.typeQuestion);
+      setOpenDialogUpdateQuestion(true);
+      setQuestionData(question);
+    }
   };
   /**
     * @author Fabian Duran
-    * @description Permite eliminar 
+    * @description Permite eliminar una pregunta de la encuesta. 
     * @param indexSection Indice de la seccion donde esta ubicada la pregunta. 
     * @param indexQuestion Indice en el cual se ubica la pregunta dentro de la seccion. 
   */
@@ -53,11 +68,22 @@ export default function FormCreateSurvey({ formik }) {
     const setShowAlert = { ...alert, show: false };
     setAlert(setShowAlert);
   };
+  /**
+    * @author Fabian Duran
+    * @description Permite ocultar la modal de la vista. 
+  */
+  const closeDialoQuestion = () => setOpenDialogUpdateQuestion(false);
 
   return (
     <form autoComplete="off" onSubmit={formik.handleSubmit}>
       <Grid container spacing={2} mt={4}>
         <AlertWithSnackbar alert={alert} hideAlert={hideAlert} />
+        <DialogCreateQuestion
+          openDialogCreateQuestion={openDialogUpdateQuestion}
+          closeDialogQuestion={closeDialoQuestion}
+          typeQuestion={typeQuestion}
+          listSections={formik.values.sections}
+          data={questionData} />
         <Grid item md={6}>
           <TextField
             fullWidth
@@ -224,7 +250,7 @@ export default function FormCreateSurvey({ formik }) {
                       formik.values.sections[index].fields.length > 0 && (
                         <ViewQuestions
                           questions={formik.values.sections[index].fields}
-                          updateQuestion={updateQuestion}
+                          updateQuestion={showQuestion}
                           deleteQuestion={deleteQuestion} />
                       )
                     }

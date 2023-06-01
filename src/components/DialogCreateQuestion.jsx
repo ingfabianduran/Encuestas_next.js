@@ -17,11 +17,11 @@ import {
   IconButton
 } from "@mui/material";
 import { useFormik, FormikProvider, FieldArray } from "formik";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
-export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDialogQuestion, typeQuestion, listSections, addQuestionToSurvey }) {
+export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDialogQuestion, typeQuestion, listSections, addQuestionToSurvey, data }) {
   const formik = useFormik({
     initialValues: {
       questionText: '',
@@ -35,11 +35,20 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
       indexSection: ''
     },
     onSubmit: (values) => {
-      console.log('Submit create question', values);
       const setTypeQuestion = { ...values, typeQuestion };
       addQuestionToSurvey(setTypeQuestion);
     }
   });
+
+  /**
+    * @author Fabian Duran
+    * @description Valida si la pregunta seleccionada de la encuesta va a ser editada con el fin de precargar los datos sobre el formulario. 
+  */
+  useEffect(() => {
+    if (data) {
+      formik.setValues(data);
+    }
+  }, [data]);
 
   return (
     <Dialog
