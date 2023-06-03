@@ -23,7 +23,6 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { v4 as uuidv4 } from "uuid";
 
 export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDialogQuestion, typeQuestion, listSections, addQuestionToSurvey, data }) {
-  // const v4Id = v4();
   const formik = useFormik({
     initialValues: {
       questionText: '',
