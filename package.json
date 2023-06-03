@@ -24,7 +24,8 @@
     "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "sweetalert2": "^11.7.5"
+    "sweetalert2": "^11.7.5",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "eslint": "latest",

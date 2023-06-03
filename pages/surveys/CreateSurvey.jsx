@@ -7,18 +7,14 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { useFormik } from "formik";
 import * as moment from "moment";
-import { showAlert } from "../../src/services/SweetAlert";
+import { showAlert as showSweetAlert } from "../../src/services/SweetAlert";
 import AlertWithSnackbar from "../../src/components/Shared/AlertWithSnackbar";
+import useAlert from "../../src/hooks/useAlert";
 
 export default function CreateSurvey() {
   const [openDialogCreateQuestion, setOpenDialogCreateQuestion] = useState(false);
   const [typeQuestion, setTypeQuestion] = useState('');
-  const [alert, setAlert] = useState({
-    show: false,
-    type: "success",
-    title: "¡Excelente!",
-    message: "Se han guardado los cambios del campo con éxito."
-  });
+  const { alert, showAlert, hideAlert } = useAlert();
   const formik = useFormik({
     initialValues: {
       nameSurvey: '',
@@ -49,7 +45,7 @@ export default function CreateSurvey() {
     if (formik.values.sections[0].title !== '' && formik.values.sections[0].description) {
       setTypeQuestion(keyQuestion);
       setOpenDialogCreateQuestion(true);
-    } else showAlert({ title: "Error", text: "Por favor registre por lo menos una sección", icon: "error" });
+    } else showSweetAlert({ title: "Error", text: "Por favor registre por lo menos una sección", icon: "error" });
   };
   /**
     * @author Fabian Duran
@@ -62,20 +58,11 @@ export default function CreateSurvey() {
     * @param formValuesQuestion Información referente a la pregunta creada. 
   */
   const addQuestionToSurvey = (formValuesQuestion) => {
-    const setShowAlert = { ...alert, show: true };
-    setAlert(setShowAlert);
+    showAlert({ message: "Se han guardado los cambios del campo con éxito." });
     const setFieldsBySection = formik.values.sections;
     setFieldsBySection[formValuesQuestion.indexSection].fields.push(formValuesQuestion);
     formik.setFieldValue("sections", setFieldsBySection);
     closeDialogQuestion();
-  };
-  /**
-    * @author Fabian Duran
-    * @description Permite ocultar la alerta de la vista.  
-  */
-  const hideAlert = () => {
-    const setShowAlert = { ...alert, show: false };
-    setAlert(setShowAlert);
   };
 
   return (

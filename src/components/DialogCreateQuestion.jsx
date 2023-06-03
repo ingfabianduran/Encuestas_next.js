@@ -20,8 +20,10 @@ import { useFormik, FormikProvider, FieldArray } from "formik";
 import { Fragment, useEffect } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { v4 as uuidv4 } from "uuid";
 
 export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDialogQuestion, typeQuestion, listSections, addQuestionToSurvey, data }) {
+  // const v4Id = v4();
   const formik = useFormik({
     initialValues: {
       questionText: '',
@@ -32,11 +34,17 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
         id: '',
         text: '',
       }],
-      indexSection: ''
+      indexSection: '',
+      key: ''
     },
     onSubmit: (values) => {
-      const setTypeQuestion = { ...values, typeQuestion };
-      addQuestionToSurvey(setTypeQuestion, data);
+      if (data) {
+        const setTypeQuestion = { ...values, typeQuestion };
+        addQuestionToSurvey(setTypeQuestion, data);
+      } else {
+        const setTypeQuestion = { ...values, typeQuestion, key: uuidv4() };
+        addQuestionToSurvey(setTypeQuestion, data);
+      }
     }
   });
 

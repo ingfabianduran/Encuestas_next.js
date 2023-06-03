@@ -10,14 +10,10 @@ import ViewQuestions from "./ViewQuestions";
 import AlertWithSnackbar from "./Shared/AlertWithSnackbar";
 import DialogCreateQuestion from "./DialogCreateQuestion";
 import { showAlertConfirm } from "../services/SweetAlert";
+import useAlert from "../hooks/useAlert";
 
 export default function FormCreateSurvey({ formik }) {
-  const [alert, setAlert] = useState({
-    show: false,
-    type: "success",
-    title: "¡Excelente!",
-    message: ""
-  });
+  const { alert, showAlert, hideAlert } = useAlert();
   const [openDialogUpdateQuestion, setOpenDialogUpdateQuestion] = useState(false);
   const [typeQuestion, setTypeQuestion] = useState('');
   const [questionData, setQuestionData] = useState(null);
@@ -41,16 +37,27 @@ export default function FormCreateSurvey({ formik }) {
   /**
     * @author Fabian Duran
     * @description Permite actualizar la informacion de una pregunta de la encuesta. 
-    * @param indexSection Informacion de la pregunta actualizada en la modal. 
+    * @param question Informacion de la pregunta actualizada en la modal. 
+    * @param oldQuestion Informacion de la pregunta actualizada en la modal. 
   */
   const updateQuestion = (question, oldQuestion) => {
-    console.log({ question, oldQuestion });
     if (question.indexSection !== oldQuestion.indexSection) {
       filterByDeleteQuestion(oldQuestion.indexSection, indexQuestionSelect);
-      closeDialoQuestion();
+      const setSections = formik.values.sections;
+      setSections[question.indexSection].fields.push(question);
+      formik.setFieldValue("sections", setSections);
     } else {
-      console.log('No lo voy a cambiar de sección');
+      const setSections = formik.values.sections;
+      setSections.forEach((section, index) => {
+        if (index === question.indexSection) {
+          const indexQuestion = section.fields.findIndex(field => field.key === question.key);
+          section.fields[indexQuestion] = question;
+        }
+      });
+      formik.setFieldValue("sections", setSections);
     }
+    closeDialoQuestion();
+    showAlert({ message: "El campo se ha actualizado correctamente" });
   };
   /**
     * @author Fabian Duran
@@ -62,8 +69,7 @@ export default function FormCreateSurvey({ formik }) {
     showAlertConfirm({ text: "¿Está seguro de eliminar la pregunta?" }).then(confirm => {
       if (confirm.isConfirmed) {
         filterByDeleteQuestion(indexSection, indexQuestion);
-        const setShowAlert = { ...alert, show: true, message: "Se ha eliminado el campo con exito" };
-        setAlert(setShowAlert);
+        showAlert({ message: "Se ha eliminado el campo con exito" });
       }
     });
   };
@@ -84,14 +90,6 @@ export default function FormCreateSurvey({ formik }) {
       }
     });
     formik.setFieldValue("sections", setQuestionsBySection);
-  };
-  /**
-    * @author Fabian Duran
-    * @description Permite ocultar el snackbar de la vista.  
-  */
-  const hideAlert = () => {
-    const setShowAlert = { ...alert, show: false };
-    setAlert(setShowAlert);
   };
   /**
     * @author Fabian Duran

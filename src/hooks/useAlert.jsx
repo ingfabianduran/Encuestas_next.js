@@ -1,15 +1,19 @@
 import { useState } from 'react';
 
+/**
+  * @author Fabian Duran
+  * @description Hook que permite gestionar los snackbar. 
+*/
 export default function useAlert() {
   const [alert, setAlert] = useState({
     show: false,
-    type: "",
+    type: "success",
     title: "",
     message: ""
   });
 
   const showAlert = ({ type = "success", title = "¡Excelente!", message }) => {
-    const setShowAlert = { ...alert, type, title, message };
+    const setShowAlert = { ...alert, show: true, type, title, message };
     setAlert(setShowAlert);
   };
 
