@@ -1,9 +1,18 @@
 import { Fragment } from "react";
-import { Grid, TextField, IconButton } from "@mui/material";
+import { Grid, TextField, MenuItem, IconButton, InputAdornment, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from "@mui/material";
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { TimePicker } from "@mui/x-date-pickers";
 
 export default function ViewQuestions({ questions = [], updateQuestion, deleteQuestion }) {
+  const TYPES_QUESTIONS_BY_TEXT_FIELD = ["informativo", "simple", "larga", "numerico", "unica", "moneda"];
+
+  const getTypeTextField = (typeQuestion) => {
+    if (typeQuestion === "numerico") return "number";
+    if (typeQuestion === "email") return "email";
+    return "text";
+  };
+
   return (
     <Grid container sx={{
       marginTop: 1,
@@ -36,14 +45,53 @@ export default function ViewQuestions({ questions = [], updateQuestion, deleteQu
             </Grid>
             <Grid item md={12}>
               {
-                question.typeQuestion === "informativo" && (
+                TYPES_QUESTIONS_BY_TEXT_FIELD.includes(question.typeQuestion) && (
                   <TextField
+                    select={question.typeQuestion === "unica" ? true : false}
                     fullWidth
+                    type={getTypeTextField(question.typeQuestion)}
                     label={question.questionText}
-                    value={question.textInformation}
+                    value={question.typeQuestion === "informativo" ? question.textInformation : ""}
                     variant="filled"
-                    disabled={true}
-                    multiline />
+                    disabled={question.typeQuestion === "informativo" ? true : false}
+                    multiline={question.typeQuestion === "informativo" || question.typeQuestion === "larga" ? true : false}
+                    InputProps={{
+                      startAdornment: question.typeQuestion === "moneda" && <InputAdornment position="start">$</InputAdornment>
+                    }}>
+                    {
+                      question.options.map((option, index) => (
+                        <MenuItem key={index} value={option.text}>{option.text}</MenuItem>
+                      ))
+                    }
+                  </TextField>
+                )
+              }
+              {
+                question.typeQuestion === "tiempo" && (
+                  <TimePicker
+                    label={question.questionText}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        variant: 'filled'
+                      }
+                    }} />
+                )
+              }
+              {
+                question.typeQuestion === "radio" && (
+                  <FormControl>
+                    <FormLabel id="radio-button-question">{question.questionText}</FormLabel>
+                    <RadioGroup
+                      row
+                      aria-labelledby="radio-button-question">
+                      {
+                        question.options.map((option, index) => (
+                          <FormControlLabel key={index} value={option.text} control={<Radio />} label={option.text} />
+                        ))
+                      }
+                    </RadioGroup>
+                  </FormControl>
                 )
               }
             </Grid>
