@@ -29,6 +29,7 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
       textInformation: '',
       isMandatory: 0,
       hasTooltip: 0,
+      textTooltip: '',
       options: [{
         id: '',
         text: '',
@@ -118,11 +119,25 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
                         name="hasTooltip"
                         value={formik.values.hasTooltip}
                         onChange={formik.handleChange}>
-                        <FormControlLabel value={0} control={<Radio />} label="Si" />
-                        <FormControlLabel value={1} control={<Radio />} label="No" />
+                        <FormControlLabel value={1} control={<Radio />} label="Si" />
+                        <FormControlLabel value={0} control={<Radio />} label="No" />
                       </RadioGroup>
                     </FormControl>
                   </Grid>
+                  {
+                    formik.values.hasTooltip === "1" && (
+                      <Grid item md={12}>
+                        <TextField
+                          fullWidth
+                          id="textTooltip"
+                          name="textTooltip"
+                          label="Texto del tooltip"
+                          value={formik.values.textTooltip}
+                          onChange={formik.handleChange}
+                          variant="filled" />
+                      </Grid>
+                    )
+                  }
                 </>
               )
             }

@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Grid, TextField, MenuItem, IconButton, InputAdornment, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from "@mui/material";
+import { Grid, TextField, MenuItem, IconButton, InputAdornment, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Tooltip } from "@mui/material";
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { TimePicker } from "@mui/x-date-pickers";
@@ -46,58 +46,72 @@ export default function ViewQuestions({ questions = [], updateQuestion, deleteQu
             <Grid item md={12}>
               {
                 TYPES_QUESTIONS_BY_TEXT_FIELD.includes(question.typeQuestion) && (
-                  <TextField
-                    select={question.typeQuestion === "unica" ? true : false}
-                    fullWidth
-                    type={getTypeTextField(question.typeQuestion)}
-                    label={question.questionText}
-                    value={question.typeQuestion === "informativo" ? question.textInformation : ""}
-                    variant="filled"
-                    disabled={question.typeQuestion === "informativo" ? true : false}
-                    multiline={question.typeQuestion === "informativo" || question.typeQuestion === "larga" ? true : false}
-                    InputProps={{
-                      startAdornment: question.typeQuestion === "moneda" && <InputAdornment position="start">$</InputAdornment>
-                    }}>
-                    {
-                      question.options.map((option, index) => (
-                        <MenuItem key={index} value={option.text}>{option.text}</MenuItem>
-                      ))
-                    }
-                  </TextField>
+                  <Tooltip
+                    title={question.textTooltip}
+                    placement="top-start">
+                    <TextField
+                      select={question.typeQuestion === "unica" ? true : false}
+                      fullWidth
+                      type={getTypeTextField(question.typeQuestion)}
+                      label={question.questionText}
+                      value={question.typeQuestion === "informativo" ? question.textInformation : ""}
+                      variant="filled"
+                      disabled={question.typeQuestion === "informativo" ? true : false}
+                      multiline={question.typeQuestion === "informativo" || question.typeQuestion === "larga" ? true : false}
+                      InputProps={{
+                        startAdornment: question.typeQuestion === "moneda" && <InputAdornment position="start">$</InputAdornment>
+                      }}>
+                      {
+                        question.options.map((option, index) => (
+                          <MenuItem key={index} value={option.text}>{option.text}</MenuItem>
+                        ))
+                      }
+                    </TextField>
+                  </Tooltip>
                 )
               }
               {
                 question.typeQuestion === "tiempo" && (
-                  <TimePicker
-                    label={question.questionText}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                        variant: 'filled'
-                      }
-                    }} />
+                  <Tooltip
+                    title={question.textTooltip}
+                    placement="top-start">
+                    <div>
+                      <TimePicker
+                        label={question.questionText}
+                        slotProps={{
+                          textField: {
+                            fullWidth: true,
+                            variant: 'filled'
+                          }
+                        }} />
+                    </div>
+                  </Tooltip>
                 )
               }
               {
                 question.typeQuestion === "radio" && (
-                  <FormControl>
-                    <FormLabel id="radio-button-question">{question.questionText}</FormLabel>
-                    <RadioGroup
-                      row
-                      aria-labelledby="radio-button-question">
-                      {
-                        question.options.map((option, index) => (
-                          <FormControlLabel key={index} value={option.text} control={<Radio />} label={option.text} />
-                        ))
-                      }
-                    </RadioGroup>
-                  </FormControl>
+                  <Tooltip
+                    title={question.textTooltip}
+                    placement="top-start">
+                    <FormControl>
+                      <FormLabel id="radio-button-question">{question.questionText}</FormLabel>
+                      <RadioGroup
+                        row
+                        aria-labelledby="radio-button-question">
+                        {
+                          question.options.map((option, index) => (
+                            <FormControlLabel key={index} value={option.text} control={<Radio />} label={option.text} />
+                          ))
+                        }
+                      </RadioGroup>
+                    </FormControl>
+                  </Tooltip>
                 )
               }
             </Grid>
           </Fragment>
         ))
       }
-    </Grid>
+    </Grid >
   )
 }
