@@ -143,7 +143,7 @@ export default function FormCreateSurvey({ formik }) {
                   id="daysOfPublication"
                   name="daysOfPublication"
                   value={formik.values.daysOfPublication}
-                  onChange={formik.daysOfPublication}>
+                  onChange={formik.handleChange}>
                   {
                     WEEKDAYS.map((item, index) => (
                       <MenuItem key={index} value={item.value}>
