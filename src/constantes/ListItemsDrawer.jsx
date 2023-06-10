@@ -9,7 +9,7 @@ export const LIST_ITEMS_DRAWER = [
   },
   {
     name: "Encuestas",
-    url: "/surveys/CreateSurvey",
+    url: "/surveys",
     icon: <ArticleIcon />
   }
 ];

@@ -32,7 +32,20 @@ export default function CreateSurvey() {
       }]
     },
     onSubmit: (values) => {
-      console.log('Submit create encuesta', values);
+      const surveys = JSON.parse(localStorage.getItem('surveys'));
+      if (!surveys) {
+        const createLocalSurveys = [];
+        createLocalSurveys.push(values);
+        localStorage.setItem("surveys", JSON.stringify(createLocalSurveys));
+      } else {
+        surveys.push(values)
+        localStorage.setItem("surveys", JSON.stringify(surveys));
+      }
+      showSweetAlert({ text: "Encuesta creada con exito", showConfirmButton: true }).then(confirm => {
+        if (confirm.isConfirmed) {
+          console.log('Redirect list surveys');
+        }
+      });
     }
   });
 
