@@ -11,6 +11,7 @@ import AlertWithSnackbar from "./Shared/AlertWithSnackbar";
 import DialogCreateQuestion from "./DialogCreateQuestion";
 import { showAlertConfirm } from "../services/SweetAlert";
 import useAlert from "../hooks/useAlert";
+import { useRouter } from "next/router";
 
 export default function FormCreateSurvey({ formik }) {
   const { alert, showAlert, hideAlert } = useAlert();
@@ -18,6 +19,7 @@ export default function FormCreateSurvey({ formik }) {
   const [typeQuestion, setTypeQuestion] = useState('');
   const [questionData, setQuestionData] = useState(null);
   const [indexQuestionSelect, setIndexQuestionSelect] = useState(null);
+  const router = useRouter();
 
   /**
     * @author Fabian Duran
@@ -96,6 +98,17 @@ export default function FormCreateSurvey({ formik }) {
     * @description Permite ocultar la modal de la vista. 
   */
   const closeDialoQuestion = () => setOpenDialogUpdateQuestion(false);
+  /**
+    * @author Fabian Duran
+    * @description Ejecuta la alerta de confirmación si desea cancelar el proceso de creacion de una encuesta. 
+  */
+  const cancelButtonForm = () => {
+    showAlertConfirm({ text: "¿Esta seguro de cancelar la creación de la encuesta?" }).then(confirm => {
+      if (confirm.isConfirmed) {
+        router.push("/surveys");
+      }
+    })
+  };
 
   return (
     <form autoComplete="off" onSubmit={formik.handleSubmit}>
@@ -298,7 +311,7 @@ export default function FormCreateSurvey({ formik }) {
         </FormikProvider>
         <Grid item md={12}>
           <Stack direction="row" spacing={2} justifyContent="end">
-            <Button type="button" variant="outlined" size="large">Cancelar</Button>
+            <Button type="button" variant="outlined" size="large" onClick={cancelButtonForm}>Cancelar</Button>
             <Button type="submit" variant="contained" size="large">Crear encuesta</Button>
           </Stack>
         </Grid>

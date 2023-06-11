@@ -7,6 +7,11 @@ import { TimePicker } from "@mui/x-date-pickers";
 export default function ViewQuestions({ questions = [], updateQuestion, deleteQuestion }) {
   const TYPES_QUESTIONS_BY_TEXT_FIELD = ["informativo", "simple", "larga", "numerico", "unica", "moneda"];
 
+  /**
+    * @author Fabian Duran
+    * @description Retorna el tipo de input dependiendo el tipo de pregunta.
+    * @param typeQuestion Tipo de pregunta en la encuesta. 
+  */
   const getTypeTextField = (typeQuestion) => {
     if (typeQuestion === "numerico") return "number";
     if (typeQuestion === "email") return "email";

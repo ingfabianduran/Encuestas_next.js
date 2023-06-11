@@ -10,11 +10,14 @@ import * as moment from "moment";
 import { showAlert as showSweetAlert } from "../../src/services/SweetAlert";
 import AlertWithSnackbar from "../../src/components/Shared/AlertWithSnackbar";
 import useAlert from "../../src/hooks/useAlert";
+import { v4 as uuidv4 } from "uuid";
+import { useRouter } from "next/router";
 
 export default function CreateSurvey() {
   const [openDialogCreateQuestion, setOpenDialogCreateQuestion] = useState(false);
   const [typeQuestion, setTypeQuestion] = useState('');
   const { alert, showAlert, hideAlert } = useAlert();
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       nameSurvey: '',
@@ -32,18 +35,19 @@ export default function CreateSurvey() {
       }]
     },
     onSubmit: (values) => {
+      const setValuesForm = { ...values, id: uuidv4(), createAt: moment().format() };
       const surveys = JSON.parse(localStorage.getItem('surveys'));
       if (!surveys) {
         const createLocalSurveys = [];
-        createLocalSurveys.push(values);
+        createLocalSurveys.push(setValuesForm);
         localStorage.setItem("surveys", JSON.stringify(createLocalSurveys));
       } else {
-        surveys.push(values)
+        surveys.push(setValuesForm)
         localStorage.setItem("surveys", JSON.stringify(surveys));
       }
       showSweetAlert({ text: "Encuesta creada con exito", showConfirmButton: true }).then(confirm => {
         if (confirm.isConfirmed) {
-          console.log('Redirect list surveys');
+          router.push("/surveys");
         }
       });
     }
