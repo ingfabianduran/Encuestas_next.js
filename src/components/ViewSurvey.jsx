@@ -1,8 +1,17 @@
 import { Paper, Box, Stack, IconButton, Typography } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import FormCreateSurvey from "./FormCreateSurvey";
+import { useRouter } from "next/router";
 
 export default function ViewSurvey({ formik }) {
+  const router = useRouter();
+
+  /**
+    * @author Fabian Duran
+    * @description Redirige a la vista anterior visitada. 
+  */
+  const goToBack = () => router.back();
+
   return (
     <Paper elevation={5} sx={{
       padding: "50px"
@@ -15,6 +24,7 @@ export default function ViewSurvey({ formik }) {
           <IconButton
             size="small"
             disableRipple
+            onClick={goToBack}
             sx={{
               backgroundColor: "#353535",
               color: "#FBFBFB",

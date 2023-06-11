@@ -5,7 +5,7 @@ export default function Layout({ children }) {
   return (
     <Box sx={{ display: 'flex' }}>
       <NavigationDrawer />
-      <Box component="main" sx={{ flexGrow: 1, padding: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, padding: 5 }}>
         {children}
       </Box>
     </Box>

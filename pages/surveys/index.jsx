@@ -1,10 +1,12 @@
-import { Container, Grid, Typography, TextField, InputAdornment, Button } from "@mui/material";
+import { useState } from "react";
+import { Grid, Typography, TextField, InputAdornment, Button, TablePagination, Paper } from "@mui/material";
 import { useRouter } from "next/router";
 import SearchIcon from "@mui/icons-material/Search";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CardSurvey from "../../src/components/CardSurvey";
 
 export default function index() {
+  const [paginator, setPaginator] = useState({ count: 100, page: 1, rowsPerPage: 10 });
   const router = useRouter();
 
   /**
@@ -14,7 +16,7 @@ export default function index() {
   const goToCreateSurvey = () => router.push('/surveys/create-survey');
 
   return (
-    <Container maxWidth="false" sx={{ padding: 4 }}>
+    <>
       <Grid container>
         <Grid item md={12}>
           <Typography variant="h4" sx={{ fontWeight: "700", marginBottom: "10px" }}>Encuestas internas</Typography>
@@ -49,6 +51,26 @@ export default function index() {
           <CardSurvey />
         </Grid>
       </Grid>
-    </Container>
+      <Grid container justifyContent="end" paddingTop={2}>
+        <Grid item md={5}>
+          <Paper
+            elevation={5}
+            sx={{
+              backgroundColor: "white",
+              borderRadius: 2,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingY: 1
+            }}>
+            <TablePagination
+              component="div"
+              count={paginator.count}
+              page={paginator.page}
+              rowsPerPage={paginator.rowsPerPage} />
+          </Paper>
+        </Grid>
+      </Grid>
+    </>
   )
 }
