@@ -23,6 +23,7 @@
     "next": "latest",
     "prop-types": "latest",
     "react": "latest",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "latest",
     "sweetalert2": "^11.7.5",
     "uuid": "^9.0.0"
