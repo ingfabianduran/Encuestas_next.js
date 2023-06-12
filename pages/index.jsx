@@ -15,7 +15,8 @@ export default function Index() {
         <Image
           src="/landing.svg"
           height={600}
-          width={800} />
+          width={800}
+          alt="Image for landing page" />
       </Grid>
     </Grid>
   );
