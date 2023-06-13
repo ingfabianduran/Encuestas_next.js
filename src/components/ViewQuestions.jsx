@@ -2,10 +2,10 @@ import { Grid } from "@mui/material";
 import TypeQuestion from "./TypeQuestion";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-export default function ViewQuestions({ questions = [], updateQuestion, deleteQuestion }) {
+export default function ViewQuestions({ questions = [], updateQuestion, deleteQuestion, updatePositionQuestion }) {
   return (
     <DragDropContext
-      onDragEnd={(res) => console.log(res)}>
+      onDragEnd={(res) => updatePositionQuestion(res)}>
       <Droppable droppableId="questions">
         {
           (droppableProvided) => (
@@ -21,7 +21,7 @@ export default function ViewQuestions({ questions = [], updateQuestion, deleteQu
               {...droppableProvided.droppableProps}>
               {
                 questions.map((question, index) => (
-                  <Draggable key={index} draggableId={question.key} index={index}>
+                  <Draggable key={question.key} draggableId={question.key} index={index}>
                     {
                       (draggableProvided) => (
                         <Grid item md={12}

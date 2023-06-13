@@ -45,11 +45,11 @@ export default function FormCreateSurvey({ formik }) {
   const updateQuestion = (question, oldQuestion) => {
     if (question.indexSection !== oldQuestion.indexSection) {
       filterByDeleteQuestion(oldQuestion.indexSection, indexQuestionSelect);
-      const setSections = formik.values.sections;
+      const setSections = [...formik.values.sections];
       setSections[question.indexSection].fields.push(question);
       formik.setFieldValue("sections", setSections);
     } else {
-      const setSections = formik.values.sections;
+      const setSections = [...formik.values.sections];
       setSections.forEach((section, index) => {
         if (index === question.indexSection) {
           const indexQuestion = section.fields.findIndex(field => field.key === question.key);
@@ -82,7 +82,7 @@ export default function FormCreateSurvey({ formik }) {
     * @param indexQuestion Indice en el cual se ubica la pregunta dentro de la seccion. 
   */
   const filterByDeleteQuestion = (indexSection, indexQuestion) => {
-    const setQuestionsBySection = formik.values.sections;
+    const setQuestionsBySection = [...formik.values.sections];
     setQuestionsBySection.forEach((section, index) => {
       if (index === indexSection) {
         const filterQuestions = section.fields.filter((_, index) => {
@@ -108,6 +108,29 @@ export default function FormCreateSurvey({ formik }) {
         router.push("/surveys");
       }
     })
+  };
+  /**
+    * @author Fabian Duran
+    * @description Ejecuta el drag and drop entre las preguntas de las encuestas en cada seccion.
+    * @param resDragAndDrop Respuesta emitida por el drag and drop.  
+  */
+  const updatePositionQuestion = (resDragAndDrop) => {
+    const { source, destination } = resDragAndDrop;
+    if (!destination) return;
+    if (source.index === destination.index && source.droppableId === destination.droppableId) return;
+    const setSections = [...formik.values.sections];
+    let searchQuestion = null;
+    setSections.every(section => {
+      searchQuestion = section.fields.find(field => field.key === resDragAndDrop.draggableId);
+      if (searchQuestion) return false;
+      return true;
+    });
+    const fieldsBySection = [...setSections[searchQuestion.indexSection].fields];
+    const aux = fieldsBySection[source.index];
+    fieldsBySection[source.index] = fieldsBySection[destination.index];
+    fieldsBySection[destination.index] = aux;
+    setSections[searchQuestion.indexSection].fields = fieldsBySection;
+    formik.setFieldValue("sections", setSections);
   };
 
   return (
@@ -288,7 +311,8 @@ export default function FormCreateSurvey({ formik }) {
                         <ViewQuestions
                           questions={formik.values.sections[index].fields}
                           updateQuestion={showQuestion}
-                          deleteQuestion={deleteQuestion} />
+                          deleteQuestion={deleteQuestion}
+                          updatePositionQuestion={updatePositionQuestion} />
                       )
                     }
                   </Grid>
