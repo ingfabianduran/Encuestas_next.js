@@ -3,10 +3,10 @@ import NavigationDrawer from "./NavigationDrawer";
 
 export default function Layout({ children }) {
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <NavigationDrawer />
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={false}>
         <CircularProgress color="inherit" />
       </Backdrop>
