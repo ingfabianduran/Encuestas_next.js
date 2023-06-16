@@ -20,6 +20,15 @@ export default function index() {
     * @description Redirecciona a la vista de creacion de encuestas. 
   */
   const goToCreateSurvey = () => router.push('/surveys/create-survey');
+  /**
+    * @author Fabian Duran
+    * @description Redirecciona a la vista de creacion de encuestas. 
+    * @param $event Evento emitido por el paginador. 
+    * @param page Nuevo numero de pagina generado por el paginador. 
+  */
+  const onChangePage = ($event, page) => {
+    console.log("Event", $event, "Page", page);
+  };
 
   return (
     <>
@@ -73,7 +82,8 @@ export default function index() {
               component="div"
               count={paginator.count}
               page={paginator.page}
-              rowsPerPage={paginator.rowsPerPage} />
+              rowsPerPage={paginator.rowsPerPage}
+              onPageChange={onChangePage} />
           </Paper>
         </Grid>
       </Grid>
