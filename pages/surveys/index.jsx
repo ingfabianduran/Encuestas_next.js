@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Grid, Typography, TextField, InputAdornment, Button, TablePagination, Paper } from "@mui/material";
 import { useRouter } from "next/router";
 import SearchIcon from "@mui/icons-material/Search";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CardSurvey from "../../src/components/CardSurvey";
+import { useLoader } from "../../src/store/useLoader";
 
 export default function index() {
   const [paginator, setPaginator] = useState({ count: 100, page: 1, rowsPerPage: 10 });
   const router = useRouter();
+  const setLoader = useLoader((state) => state.setLoader);
 
+  useEffect(() => {
+    setLoader();
+    setTimeout(() => setLoader(), 3000);
+  }, []);
   /**
     * @author Fabian Duran
     * @description Redirecciona a la vista de creacion de encuestas. 

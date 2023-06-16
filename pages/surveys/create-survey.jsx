@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import ViewSurvey from "../../src/components/ViewSurvey";
 import TypeOfQuestions from "../../src/components/TypeOfQuestions";
@@ -12,11 +12,13 @@ import AlertWithSnackbar from "../../src/components/Shared/AlertWithSnackbar";
 import useAlert from "../../src/hooks/useAlert";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
+import { useLoader } from "../../src/store/useLoader";
 
 export default function CreateSurvey() {
   const [openDialogCreateQuestion, setOpenDialogCreateQuestion] = useState(false);
   const [typeQuestion, setTypeQuestion] = useState('');
   const { alert, showAlert, hideAlert } = useAlert();
+  const setLoader = useLoader((state) => state.setLoader);
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -53,6 +55,10 @@ export default function CreateSurvey() {
     }
   });
 
+  useEffect(() => {
+    setLoader();
+    setTimeout(() => setLoader(), 3000);
+  }, []);
   /**
     * @author Fabian Duran
     * @description Permite mostrar la modal para agregar una pregunta.  
