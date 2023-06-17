@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { Card, CardContent, Stack, Typography, Box, Switch, IconButton, Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material";
+import { Card, CardContent, Stack, Typography, Box, Switch, IconButton, Menu, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { LIST_MENU_CARD_SURVEY } from "../constantes/ListMenuCardSurvey";
+import * as moment from "moment";
+import { useRouter } from "next/router";
 
-export default function CardSurvey() {
+export default function CardSurvey({ survey }) {
   const [showMenu, setShowMenu] = useState(null);
   const openMenu = Boolean(showMenu);
+  const router = useRouter();
 
   /**
     * @author Fabian Duran
@@ -17,6 +20,13 @@ export default function CardSurvey() {
     * @description Oculta el menu en la vista. 
   */
   const hideMenu = () => setShowMenu(null);
+  /**
+    * @author Fabian Duran
+    * @description Metodo que ejecuta cierta accion dependiendo el menu seleccionado. 
+  */
+  const runMenuActions = () => {
+    router.push({ pathname: "/surveys/create-survey", query: { id: survey.id } });
+  };
 
   return (
     <Card elevation={5} sx={{ minHeight: "124px", display: "block", alignItems: "center", borderRadius: 2 }}>
@@ -40,10 +50,12 @@ export default function CardSurvey() {
           MenuListProps={{ 'aria-labelledby': 'button-menu-options' }}>
           {
             LIST_MENU_CARD_SURVEY.map((menu, index) => (
-              <MenuItem key={index}>
-                <ListItemIcon>{menu.icon}</ListItemIcon>
-                <ListItemText>{menu.text}</ListItemText>
-              </MenuItem>
+              <ListItem key={index} dense disablePadding>
+                <ListItemButton onClick={runMenuActions}>
+                  <ListItemIcon>{menu.icon}</ListItemIcon>
+                  <ListItemText>{menu.text}</ListItemText>
+                </ListItemButton>
+              </ListItem>
             ))
           }
         </Menu>
@@ -51,10 +63,10 @@ export default function CardSurvey() {
       <CardContent sx={{ width: "100%", padding: 0 }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" paddingX={4}>
           <Box display="block">
-            <Typography variant="h4" sx={{ fontWeight: "700", fontSize: "24px" }}>Encuesta clientes Claro</Typography>
+            <Typography variant="h4" sx={{ fontWeight: "700", fontSize: "24px" }}>{survey.nameSurvey}</Typography>
             <Typography sx={{ color: "#717171", fontSize: "16px" }}>
               <Box component="span" sx={{ fontWeight: "700" }}>Creada el </Box>
-              24/02/2023
+              {moment(survey.createAt).format("DD/MM/YYYY")}
             </Typography>
           </Box>
           <Box>

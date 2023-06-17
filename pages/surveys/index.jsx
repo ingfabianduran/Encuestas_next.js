@@ -7,11 +7,14 @@ import CardSurvey from "../../src/components/CardSurvey";
 import { useLoader } from "../../src/store/useLoader";
 
 export default function index() {
+  const [surveys, setSurveys] = useState([]);
   const [paginator, setPaginator] = useState({ count: 100, page: 1, rowsPerPage: 10 });
   const router = useRouter();
   const setLoader = useLoader((state) => state.setLoader);
 
   useEffect(() => {
+    const getSurveys = localStorage.getItem('surveys');
+    if (getSurveys) setSurveys(JSON.parse(getSurveys));
     setLoader();
     setTimeout(() => setLoader(), 3000);
   }, []);
@@ -62,31 +65,47 @@ export default function index() {
         </Grid>
       </Grid>
       <Grid container sx={{ marginTop: 5 }}>
-        <Grid item md={4}>
-          <CardSurvey />
-        </Grid>
+        {
+          surveys.length > 0 ? (
+            surveys.map(survey => (
+              <Grid key={survey.id} item md={4}>
+                <CardSurvey survey={survey} />
+              </Grid>
+            ))
+          ) : (
+            <Grid item md={12} sx={{ textAlign: "center" }}>
+              <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                No existen encuestas registradas.
+              </Typography>
+            </Grid>
+          )
+        }
       </Grid>
-      <Grid container justifyContent="end" paddingTop={2}>
-        <Grid item md={5}>
-          <Paper
-            elevation={5}
-            sx={{
-              backgroundColor: "white",
-              borderRadius: 2,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingY: 1
-            }}>
-            <TablePagination
-              component="div"
-              count={paginator.count}
-              page={paginator.page}
-              rowsPerPage={paginator.rowsPerPage}
-              onPageChange={onChangePage} />
-          </Paper>
-        </Grid>
-      </Grid>
+      {
+        surveys.length > 0 && (
+          <Grid container justifyContent="end" paddingTop={2}>
+            <Grid item md={5}>
+              <Paper
+                elevation={5}
+                sx={{
+                  backgroundColor: "white",
+                  borderRadius: 2,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  paddingY: 1
+                }}>
+                <TablePagination
+                  component="div"
+                  count={paginator.count}
+                  page={paginator.page}
+                  rowsPerPage={paginator.rowsPerPage}
+                  onPageChange={onChangePage} />
+              </Paper>
+            </Grid>
+          </Grid>
+        )
+      }
     </>
   )
 }
