@@ -29,7 +29,7 @@ export default function NavigationDrawer() {
     if (!action) router.push(url);
     else {
       const newStateOpen = !open;
-      const newItemsBottonMenu = [{ ...itemsBottomMenu[0], name: "Contraer", icon: open ? <KeyboardArrowLeftIcon /> : <KeyboardArrowRightIcon /> }];
+      const newItemsBottonMenu = [{ ...itemsBottomMenu[0], name: "Contraer", icon: open ? <KeyboardArrowRightIcon /> : <KeyboardArrowLeftIcon /> }];
       setOpen(newStateOpen);
       setItemsBottonMenu(newItemsBottonMenu);
     }
