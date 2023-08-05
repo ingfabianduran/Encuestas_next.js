@@ -56,7 +56,6 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
   */
   useEffect(() => {
     if (data) formik.setValues(data);
-    formik.setFieldValue('type', typeQuestion)
   }, [data]);
   /**
     * @author Fabian Duran
