@@ -10,8 +10,6 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
-  InputLabel,
-  Select,
   MenuItem,
   Button,
   IconButton
@@ -21,10 +19,12 @@ import { Fragment, useEffect } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { v4 as uuidv4 } from "uuid";
+import { QUESTION_SCHEMA } from "../validators/question";
 
 export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDialogQuestion, typeQuestion, listSections, addQuestionToSurvey, data }) {
   const formik = useFormik({
     initialValues: {
+      type: '',
       questionText: '',
       textInformation: '',
       isMandatory: 0,
@@ -37,7 +37,8 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
       indexSection: '',
       key: ''
     },
-    onSubmit: (values) => {
+    validationSchema: QUESTION_SCHEMA,
+    onSubmit: (values, { resetForm }) => {
       if (data) {
         const setTypeQuestion = { ...values, typeQuestion };
         addQuestionToSurvey(setTypeQuestion, data);
@@ -45,6 +46,7 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
         const setTypeQuestion = { ...values, typeQuestion, key: uuidv4() };
         addQuestionToSurvey(setTypeQuestion, data);
       }
+      resetForm();
     }
   });
 
@@ -53,10 +55,16 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
     * @description Valida si la pregunta seleccionada de la encuesta va a ser editada con el fin de precargar los datos sobre el formulario. 
   */
   useEffect(() => {
-    if (data) {
-      formik.setValues(data);
-    }
+    if (data) formik.setValues(data);
+    formik.setFieldValue('type', typeQuestion)
   }, [data]);
+  /**
+    * @author Fabian Duran
+    * @description Valida el tipo de pregunta para setearlo en el formulario con su respectivo valor. 
+  */
+  useEffect(() => {
+    formik.setFieldValue('type', typeQuestion)
+  }, [typeQuestion]);
 
   return (
     <Dialog
@@ -76,7 +84,9 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
                 label="Pregunta"
                 value={formik.values.questionText}
                 onChange={formik.handleChange}
-                variant="filled" />
+                variant="filled"
+                error={formik.errors.questionText && formik.touched.questionText}
+                helperText={formik.errors.questionText} />
             </Grid>
             {
               typeQuestion === "informativo" && (
@@ -89,7 +99,9 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
                     value={formik.values.textInformation}
                     onChange={formik.handleChange}
                     variant="filled"
-                    multiline />
+                    multiline
+                    error={formik.errors.textInformation && formik.touched.textInformation}
+                    helperText={formik.errors.textInformation} />
                 </Grid>
               )
             }
@@ -134,7 +146,9 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
                           label="Texto del tooltip"
                           value={formik.values.textTooltip}
                           onChange={formik.handleChange}
-                          variant="filled" />
+                          variant="filled"
+                          error={formik.errors.textTooltip && formik.touched.textTooltip}
+                          helperText={formik.errors.textTooltip} />
                       </Grid>
                     )
                   }
@@ -158,7 +172,9 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
                                 label={`Opción ${index + 1}`}
                                 value={formik.values.options[index].text}
                                 onChange={formik.handleChange}
-                                variant="filled" />
+                                variant="filled"
+                                error={formik.errors.options?.[index]?.text && formik.touched.options?.[index]?.text}
+                                helperText={formik.errors.options?.[index]?.text} />
                             </Grid>
                             <Grid item md={1}>
                               <IconButton onClick={() =>
@@ -184,20 +200,23 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
               ) : null
             }
             <Grid item md={12}>
-              <FormControl fullWidth variant="filled">
-                <InputLabel id="indexSection">Sección de la encuesta</InputLabel>
-                <Select
-                  id="indexSection"
-                  name="indexSection"
-                  value={formik.values.indexSection}
-                  onChange={formik.handleChange}>
-                  {
-                    listSections.map((item, index) => (
-                      <MenuItem key={index} value={index}>{item.title}</MenuItem>
-                    ))
-                  }
-                </Select>
-              </FormControl>
+              <TextField
+                fullWidth
+                label="Sección de la encuesta"
+                id="indexSection"
+                name="indexSection"
+                variant="filled"
+                select
+                value={formik.values.indexSection}
+                onChange={formik.handleChange}
+                error={formik.errors.indexSection && formik.touched.indexSection}
+                helperText={formik.errors.indexSection}>
+                {
+                  listSections.map((item, index) => (
+                    <MenuItem key={index} value={index}>{item.title}</MenuItem>
+                  ))
+                }
+              </TextField>
             </Grid>
           </Grid>
         </DialogContent>
