@@ -62,7 +62,7 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
     * @description Valida el tipo de pregunta para setearlo en el formulario con su respectivo valor. 
   */
   useEffect(() => {
-    formik.setFieldValue('type', typeQuestion)
+    formik.setFieldValue('type', typeQuestion);
   }, [typeQuestion]);
 
   return (
@@ -84,8 +84,8 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
                 value={formik.values.questionText}
                 onChange={formik.handleChange}
                 variant="filled"
-                error={formik.errors.questionText && formik.touched.questionText}
-                helperText={formik.errors.questionText} />
+                error={Boolean(formik.errors.questionText) && formik.touched.questionText}
+                helperText={formik.touched.questionText && formik.errors.questionText} />
             </Grid>
             {
               typeQuestion === "informativo" && (
@@ -99,8 +99,8 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
                     onChange={formik.handleChange}
                     variant="filled"
                     multiline
-                    error={formik.errors.textInformation && formik.touched.textInformation}
-                    helperText={formik.errors.textInformation} />
+                    error={Boolean(formik.errors.textInformation) && formik.touched.textInformation}
+                    helperText={formik.touched.textInformation && formik.errors.textInformation} />
                 </Grid>
               )
             }
@@ -146,8 +146,8 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
                           value={formik.values.textTooltip}
                           onChange={formik.handleChange}
                           variant="filled"
-                          error={formik.errors.textTooltip && formik.touched.textTooltip}
-                          helperText={formik.errors.textTooltip} />
+                          error={Boolean(formik.errors.textTooltip) && formik.touched.textTooltip}
+                          helperText={formik.touched.textTooltip && formik.errors.textTooltip} />
                       </Grid>
                     )
                   }
@@ -172,8 +172,8 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
                                 value={formik.values.options[index].text}
                                 onChange={formik.handleChange}
                                 variant="filled"
-                                error={formik.errors.options?.[index]?.text && formik.touched.options?.[index]?.text}
-                                helperText={formik.errors.options?.[index]?.text} />
+                                error={Boolean(formik.errors.options?.[index]?.text) && formik.touched.options?.[index]?.text}
+                                helperText={formik.touched.options?.[index]?.text && formik.errors.options?.[index]?.text} />
                             </Grid>
                             <Grid item md={1}>
                               <IconButton onClick={() =>
@@ -208,8 +208,8 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
                 select
                 value={formik.values.indexSection}
                 onChange={formik.handleChange}
-                error={formik.errors.indexSection && formik.touched.indexSection}
-                helperText={formik.errors.indexSection}>
+                error={Boolean(formik.errors.indexSection) && formik.touched.indexSection}
+                helperText={formik.touched.indexSection && formik.errors.indexSection}>
                 {
                   listSections.map((item, index) => (
                     <MenuItem key={index} value={index}>{item.title}</MenuItem>

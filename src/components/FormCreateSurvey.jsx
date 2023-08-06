@@ -152,43 +152,51 @@ export default function FormCreateSurvey({ formik }) {
             label="Nombre de la encuesta"
             value={formik.values.nameSurvey}
             onChange={formik.handleChange}
-            variant="filled" />
+            variant="filled"
+            error={Boolean(formik.errors.nameSurvey) && formik.touched.nameSurvey}
+            helperText={formik.touched.nameSurvey && formik.errors.nameSurvey} />
         </Grid>
         <Grid item md={6}>
-          <FormControl fullWidth variant="filled">
-            <InputLabel id="launchSurvey">Lanzamiento de la encuesta</InputLabel>
-            <Select
-              id="launchSurvey"
-              name="launchSurvey"
-              value={formik.values.launchSurvey}
-              onChange={formik.handleChange}>
-              {
-                LAUNCH_OF_THE_SURVEY.map((item, index) => (
-                  <MenuItem key={index} value={item.value}>{item.name}</MenuItem>
-                ))
-              }
-            </Select>
-          </FormControl>
+          <TextField
+            fullWidth
+            label="Lanzamiento de la encuesta"
+            id="launchSurvey"
+            name="launchSurvey"
+            variant="filled"
+            select
+            value={formik.values.launchSurvey}
+            onChange={formik.handleChange}
+            error={Boolean(formik.errors.launchSurvey) && formik.touched.launchSurvey}
+            helperText={formik.touched.launchSurvey && formik.errors.launchSurvey}>
+            {
+              LAUNCH_OF_THE_SURVEY.map((item, index) => (
+                <MenuItem key={index} value={item.value}>{item.name}</MenuItem>
+              ))
+            }
+          </TextField>
         </Grid>
         {
           formik.values.launchSurvey === 1 || formik.values.launchSurvey === 3 ? (
             <Grid item md={6}>
-              <FormControl fullWidth variant="filled">
-                <InputLabel id="daysOfPublication">Dias de publicación</InputLabel>
-                <Select
-                  id="daysOfPublication"
-                  name="daysOfPublication"
-                  value={formik.values.daysOfPublication}
-                  onChange={formik.handleChange}>
-                  {
-                    WEEKDAYS.map((item, index) => (
-                      <MenuItem key={index} value={item.value}>
-                        {item.name}
-                      </MenuItem>
-                    ))
-                  }
-                </Select>
-              </FormControl>
+              <TextField
+                fullWidth
+                label="Dias de publicación"
+                id="daysOfPublication"
+                name="daysOfPublication"
+                variant="filled"
+                select
+                value={formik.values.daysOfPublication}
+                onChange={formik.handleChange}
+                error={Boolean(formik.errors.daysOfPublication) && formik.touched.daysOfPublication}
+                helperText={formik.touched.daysOfPublication && formik.errors.daysOfPublication}>
+                {
+                  WEEKDAYS.map((item, index) => (
+                    <MenuItem key={index} value={item.value}>
+                      {item.name}
+                    </MenuItem>
+                  ))
+                }
+              </TextField>
             </Grid>
           ) : null
         }
@@ -239,17 +247,20 @@ export default function FormCreateSurvey({ formik }) {
           )
         }
         <Grid item md={formik.values.launchSurvey === '' || formik.values.launchSurvey === 3 ? 12 : formik.values.launchSurvey === 2 ? 4 : 6}>
-          <FormControl fullWidth variant="filled">
-            <InputLabel id="publishSurveyTo">Publicar encuesta a</InputLabel>
-            <Select
-              id="publishSurveyTo"
-              name="publishSurveyTo"
-              value={formik.values.publishSurveyTo}
-              onChange={formik.handleChange}>
-              <MenuItem value={1}>Todos los usuarios internos</MenuItem>
-              <MenuItem value={2}>A cédulas en específico</MenuItem>
-            </Select>
-          </FormControl>
+          <TextField
+            fullWidth
+            label="Publicar encuesta a"
+            id="publishSurveyTo"
+            name="publishSurveyTo"
+            variant="filled"
+            select
+            value={formik.values.publishSurveyTo}
+            onChange={formik.handleChange}
+            error={Boolean(formik.errors.publishSurveyTo) && formik.touched.publishSurveyTo}
+            helperText={formik.touched.publishSurveyTo && formik.errors.publishSurveyTo}>
+            <MenuItem value={1}>Todos los usuarios internos</MenuItem>
+            <MenuItem value={2}>A cédulas en específico</MenuItem>
+          </TextField>
         </Grid>
         {
           formik.values.publishSurveyTo === 2 && (
@@ -260,8 +271,10 @@ export default function FormCreateSurvey({ formik }) {
                 name="loadIdbase"
                 label="Cargar base de cédulas"
                 value={formik.values.loadIdbase}
-                onChange={formik.handleChange}
-                variant="filled" />
+                onChange={(event) => { formik.setFieldValue("loadIdbase", event); }}
+                variant="filled"
+                error={Boolean(formik.errors.loadIdbase) && formik.touched.loadIdbase}
+                helperText={formik.touched.loadIdbase && formik.errors.loadIdbase} />
             </Grid>
           )
         }

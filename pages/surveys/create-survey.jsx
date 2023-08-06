@@ -13,6 +13,7 @@ import useAlert from "../../src/hooks/useAlert";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
 import { useLoader } from "../../src/store/useLoader";
+import { SURVEY_SCHEMA } from "../../src/validators/survey";
 
 export default function CreateSurvey() {
   const [openDialogCreateQuestion, setOpenDialogCreateQuestion] = useState(false);
@@ -25,9 +26,9 @@ export default function CreateSurvey() {
       nameSurvey: '',
       launchSurvey: '',
       daysOfPublication: '',
-      releaseDate: moment(),
-      publicationStartDate: moment(),
-      publicationEndDate: moment(),
+      releaseDate: moment().format(),
+      publicationStartDate: moment().format(),
+      publicationEndDate: moment().format(),
       publishSurveyTo: '',
       loadIdbase: '',
       sections: [{
@@ -36,6 +37,7 @@ export default function CreateSurvey() {
         fields: []
       }]
     },
+    validationSchema: SURVEY_SCHEMA,
     onSubmit: (values) => {
       const setValuesForm = { ...values, id: uuidv4(), createAt: moment().format() };
       const surveys = JSON.parse(localStorage.getItem('surveys'));
