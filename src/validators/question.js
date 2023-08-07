@@ -15,7 +15,7 @@ export const QUESTION_SCHEMA = yup.object().shape({
     otherwise: (schema) => schema.notRequired(),
   }),
   options: yup.array().when('type', {
-    is: 'unica' || 'radio',
+    is: (value) => value === 'unica' || value === 'radio',
     then: (schema) => schema.of(yup.object().shape({
       text: yup.string().required('Campo requerido')
     })),

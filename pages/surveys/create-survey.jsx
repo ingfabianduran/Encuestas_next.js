@@ -7,7 +7,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { useFormik } from "formik";
 import * as moment from "moment";
-import { showAlert as showSweetAlert } from "../../src/services/SweetAlert";
+import { showAlert as showSweetAlert, showAlertConfirm } from "../../src/services/SweetAlert";
 import AlertWithSnackbar from "../../src/components/Shared/AlertWithSnackbar";
 import useAlert from "../../src/hooks/useAlert";
 import { v4 as uuidv4 } from "uuid";
@@ -26,9 +26,9 @@ export default function CreateSurvey() {
       nameSurvey: '',
       launchSurvey: '',
       daysOfPublication: '',
-      releaseDate: moment().format(),
-      publicationStartDate: moment().format(),
-      publicationEndDate: moment().format(),
+      releaseDate: null,
+      publicationStartDate: null,
+      publicationEndDate: null,
       publishSurveyTo: '',
       loadIdbase: '',
       sections: [{
@@ -39,19 +39,23 @@ export default function CreateSurvey() {
     },
     validationSchema: SURVEY_SCHEMA,
     onSubmit: (values) => {
-      const setValuesForm = { ...values, id: uuidv4(), createAt: moment().format() };
-      const surveys = JSON.parse(localStorage.getItem('surveys'));
-      if (!surveys) {
-        const createLocalSurveys = [];
-        createLocalSurveys.push(setValuesForm);
-        localStorage.setItem("surveys", JSON.stringify(createLocalSurveys));
-      } else {
-        surveys.push(setValuesForm)
-        localStorage.setItem("surveys", JSON.stringify(surveys));
-      }
-      showSweetAlert({ text: "Encuesta creada con exito", showConfirmButton: true }).then(confirm => {
-        if (confirm.isConfirmed) {
-          router.push("/surveys");
+      showAlertConfirm({ title: "¿Está seguro?", text: "¿De guardar la encuesta?" }).then(isConfirm => {
+        if (isConfirm.isConfirmed) {
+          const setValuesForm = { ...values, id: uuidv4(), createAt: moment() };
+          const surveys = JSON.parse(localStorage.getItem('surveys'));
+          if (!surveys) {
+            const createLocalSurveys = [];
+            createLocalSurveys.push(setValuesForm);
+            localStorage.setItem("surveys", JSON.stringify(createLocalSurveys));
+          } else {
+            surveys.push(setValuesForm)
+            localStorage.setItem("surveys", JSON.stringify(surveys));
+          }
+          showSweetAlert({ text: "Encuesta creada con exito", showConfirmButton: true }).then(confirm => {
+            if (confirm.isConfirmed) {
+              router.push("/surveys");
+            }
+          });
         }
       });
     }

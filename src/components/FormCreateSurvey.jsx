@@ -208,12 +208,17 @@ export default function FormCreateSurvey({ formik }) {
                   label="Fecha inicio de la publicación"
                   value={formik.values.publicationStartDate}
                   onChange={(value) => formik.setFieldValue("publicationStartDate", value, true)}
+                  ren
                   slotProps={{
                     textField: {
                       variant: 'filled',
-                      fullWidth: true
+                      fullWidth: true,
+                      error: Boolean(formik.errors.publicationStartDate) && formik.touched.publicationStartDate,
+                      helperText: formik.touched.publicationStartDate && formik.errors.publicationStartDate
                     }
-                  }} />
+                  }}
+                  error={Boolean(formik.errors.publicationStartDate) && formik.touched.publicationStartDate}
+                  helperText={formik.touched.publicationStartDate && formik.errors.publicationStartDate} />
               </Grid>
               <Grid item md={4}>
                 <DatePicker
@@ -223,7 +228,9 @@ export default function FormCreateSurvey({ formik }) {
                   slotProps={{
                     textField: {
                       variant: 'filled',
-                      fullWidth: true
+                      fullWidth: true,
+                      error: Boolean(formik.errors.publicationEndDate) && formik.touched.publicationEndDate,
+                      helperText: formik.touched.publicationEndDate && formik.errors.publicationEndDate
                     }
                   }} />
               </Grid>
@@ -240,7 +247,9 @@ export default function FormCreateSurvey({ formik }) {
                 slotProps={{
                   textField: {
                     variant: 'filled',
-                    fullWidth: true
+                    fullWidth: true,
+                    error: Boolean(formik.errors.releaseDate) && formik.touched.releaseDate,
+                    helperText: formik.touched.releaseDate && formik.errors.releaseDate
                   }
                 }} />
             </Grid>
@@ -308,7 +317,9 @@ export default function FormCreateSurvey({ formik }) {
                       value={formik.values.sections[index].title}
                       onChange={formik.handleChange}
                       variant="filled"
-                      margin="normal" />
+                      margin="normal"
+                      error={Boolean(formik.errors.sections?.[index]?.title) && formik.touched.sections?.[index]?.title}
+                      helperText={formik.touched.sections?.[index]?.title && formik.errors.sections?.[index]?.title} />
                     <TextField
                       fullWidth
                       id={`sections[${index}].description`}
@@ -318,7 +329,9 @@ export default function FormCreateSurvey({ formik }) {
                       onChange={formik.handleChange}
                       variant="filled"
                       margin="normal"
-                      multiline />
+                      multiline
+                      error={Boolean(formik.errors.sections?.[index]?.description) && formik.touched.sections?.[index]?.description}
+                      helperText={formik.touched.sections?.[index]?.description && formik.errors.sections?.[index]?.description} />
                     {
                       formik.values.sections[index].fields.length > 0 && (
                         <ViewQuestions

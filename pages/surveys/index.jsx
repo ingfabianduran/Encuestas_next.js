@@ -64,7 +64,7 @@ export default function index() {
           </Button>
         </Grid>
       </Grid>
-      <Grid container sx={{ marginTop: 5 }}>
+      <Grid container sx={{ marginTop: 5 }} spacing={2}>
         {
           surveys.length > 0 ? (
             surveys.map(survey => (
