@@ -21,10 +21,10 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { v4 as uuidv4 } from "uuid";
 import { QUESTION_SCHEMA } from "../validators/question";
 
-export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDialogQuestion, typeQuestion, listSections, addQuestionToSurvey, data }) {
+export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDialogQuestion, typeQuestion, listSections, addQuestionToSurvey, data = null }) {
   const formik = useFormik({
     initialValues: {
-      type: '',
+      type: typeQuestion,
       questionText: '',
       textInformation: '',
       isMandatory: 0,
@@ -37,6 +37,7 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
       indexSection: '',
       key: ''
     },
+    enableReinitialize: true,
     validationSchema: QUESTION_SCHEMA,
     onSubmit: (values, { resetForm }) => {
       if (data) {
@@ -55,15 +56,8 @@ export default function DialogCreateQuestion({ openDialogCreateQuestion, closeDi
     * @description Valida si la pregunta seleccionada de la encuesta va a ser editada con el fin de precargar los datos sobre el formulario. 
   */
   useEffect(() => {
-    if (data) formik.setValues(data);
+    if (data !== null) formik.setValues(data);
   }, [data]);
-  /**
-    * @author Fabian Duran
-    * @description Valida el tipo de pregunta para setearlo en el formulario con su respectivo valor. 
-  */
-  useEffect(() => {
-    formik.setFieldValue('type', typeQuestion);
-  }, [typeQuestion]);
 
   return (
     <Dialog

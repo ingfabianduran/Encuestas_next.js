@@ -137,13 +137,16 @@ export default function FormCreateSurvey({ formik }) {
     <form autoComplete="off" onSubmit={formik.handleSubmit}>
       <Grid container spacing={2} mt={4}>
         <AlertWithSnackbar alert={alert} hideAlert={hideAlert} />
-        <DialogCreateQuestion
-          openDialogCreateQuestion={openDialogUpdateQuestion}
-          closeDialogQuestion={closeDialoQuestion}
-          typeQuestion={typeQuestion}
-          listSections={formik.values.sections}
-          data={questionData}
-          addQuestionToSurvey={updateQuestion} />
+        {
+          openDialogUpdateQuestion &&
+          <DialogCreateQuestion
+            openDialogCreateQuestion={openDialogUpdateQuestion}
+            closeDialogQuestion={closeDialoQuestion}
+            typeQuestion={typeQuestion}
+            listSections={formik.values.sections}
+            data={questionData}
+            addQuestionToSurvey={updateQuestion} />
+        }
         <Grid item md={6}>
           <TextField
             fullWidth

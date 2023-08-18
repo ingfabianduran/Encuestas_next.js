@@ -104,12 +104,15 @@ export default function CreateSurvey() {
       <Grid item md={4}>
         <TypeOfQuestions openDialogQuestion={openDialogQuestion} />
       </Grid>
-      <DialogCreateQuestion
-        openDialogCreateQuestion={openDialogCreateQuestion}
-        closeDialogQuestion={closeDialogQuestion}
-        typeQuestion={typeQuestion}
-        listSections={formik.values.sections}
-        addQuestionToSurvey={addQuestionToSurvey} />
+      {
+        openDialogCreateQuestion &&
+        <DialogCreateQuestion
+          openDialogCreateQuestion={openDialogCreateQuestion}
+          closeDialogQuestion={closeDialogQuestion}
+          typeQuestion={typeQuestion}
+          listSections={formik.values.sections}
+          addQuestionToSurvey={addQuestionToSurvey} />
+      }
       <AlertWithSnackbar
         alert={alert}
         hideAlert={hideAlert} />
